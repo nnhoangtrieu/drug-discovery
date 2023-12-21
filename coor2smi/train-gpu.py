@@ -62,8 +62,11 @@ val_loader = DataLoader(val_set, batch_size=BATCH_SIZE, shuffle=True)
 test_loader = DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=True)
 
 
-encoder = Encoder(DIM_MODEL, NUM_HEAD, DROPOUT).to(device)
-decoder = Decoder(DIM_MODEL, NUM_HEAD, len(smi_dic),longest_smi, DROPOUT).to(device)
+encoder = Encoder(DIM_MODEL, NUM_HEAD, DROPOUT)
+decoder = Decoder(DIM_MODEL, NUM_HEAD, len(smi_dic),longest_smi, DROPOUT)
+
+encoder = nn.DataParallel(encoder).to(device)
+decoder = nn.DataParallel(decoder).to(device)
 
 weight = torch.ones(len(smi_dic)).to(device)
 weight[2] = torch.tensor(0.0001)

@@ -291,7 +291,7 @@ def train_epoch(train_loader, val_loader, test_loader,
 
 def train(train_loader, val_loader, test_loader,
           encoder, decoder, 
-          patience_threshold = 4, num_epoch=50, learning_rate=0.001, tf_rate = 0):
+          weight, patience_threshold = 4, num_epoch=50, learning_rate=0.001, tf_rate = 0):
     start = time.time()
     
     best_val = float('inf')
@@ -302,7 +302,9 @@ def train(train_loader, val_loader, test_loader,
     encoder_optimizer = torch.optim.Adam(encoder.parameters(), lr=learning_rate)
     decoder_optimizer = torch.optim.Adam(decoder.parameters(), lr=learning_rate)
 
-    criterion = nn.NLLLoss()
+    
+
+    criterion = nn.NLLLoss(weight=weight)
 
     tf = True
 
